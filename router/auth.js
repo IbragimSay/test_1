@@ -2,7 +2,7 @@ const {Router} = require('express')
 const config = require('config-json')
 config.load("./config.json")
 const SecretKey = config.get('SecretKey')
-const {Users} = require('../bd')
+const {Users, Posts} = require('../bd')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -16,14 +16,13 @@ const getToken =(id, role)=>{
         expiresIn: "24h"
     })
 }
-
+// POST
 // http://localhost:3500/api/auth/registor
-// body:
+// В body надо предать
 // mail
 // password
 // name
 // tag
-// role
 router.post('/registor', async (req, res)=>{
     try{
         const {mail, password, name, tag} = req.body
@@ -56,7 +55,7 @@ router.post('/registor', async (req, res)=>{
             tag, 
             role: "user"
         })
-        res.json({
+        return res.json({
             mes: "пользователь создан"
         })
     }catch(e){
@@ -65,9 +64,14 @@ router.post('/registor', async (req, res)=>{
         })
     }
 })
+// На выходе мы поучаем объект mes 
 
+//=========================
+
+
+// POST
 // http://localhost:3500/api/auth/login
-// body:
+// В body надо предать
 // mail
 // password
 router.post('/login', async (req, res)=>{
@@ -93,32 +97,44 @@ router.post('/login', async (req, res)=>{
         token: token
     })
 })
+// На выходе мы поучаем объект token 
 
+//=========================
+// GET
 // http://localhost:3500/api/auth/entrance
-// headers:
-// Authorization: token
+// В headers надо предать
+// Authorization: {токен пользователя}
 router.get('/entrance', async (req, res)=>{
-    const token = req.headers.authorization
-    const tokenV = jwt.verify(token, SecretKey, (err, data)=>{
+    const token = jwt.verify(req.headers.authorization, SecretKey, (err, data)=>{
         if(err){
             return false
         }else{
             return data
         }
     })
-    if(!tokenV){
+
+    if(!token){
         return res.json({
             user: null
         })
     }
     const user = await Users.findOne({
+
+        attributes: ["id", "name", "tag", "role"],
         where:{
-            id: tokenV.id
+            id: token.id
         }
     })
+    const post = await Posts.findAll()
+    
     return res.json({
-        user: user
+        user: user,
+        post: post
     })
-})
+    
 
+})
+// На выходе мы получаем объекты user и posts с полями
+// user: id, name, tag, role
+// posts: [{id, id_user, title, text, content }]
 module.exports = router
