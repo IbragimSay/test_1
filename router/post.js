@@ -8,7 +8,7 @@ const config = require('config-json')
 config.load('./config.json')
 const SecretKey = config.get('SecretKey')
 const router = Router()
-
+// добавить пост
 // POST
 // http://localhost:3500/api/posts/add
 // В body надо предать
@@ -48,6 +48,7 @@ router.post('/add', async (req, res)=>{
 // На выходе мы поучаем объект mes 
 
 //=========================
+// удалить пост
 // POST
 //http://localhost:3500/api/posts/delete/?id={IDпоста}
 // В headers надо предать
@@ -110,6 +111,7 @@ router.delete('/delete', async (req, res)=>{
 })
 // На выходе мы поучаем объект mes 
 //=========================
+// обновить пост
 // PATCH
 // http://localhost:3500/api/posts/updatePost/?id={IDпоста}
 // В body надо предать
@@ -192,6 +194,8 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({storage:storage})
+
+// загрузить файл
 // POST
 // http://localhost:3500/api/posts/addContent/?id={IDпоста}
 // В headers надо предать

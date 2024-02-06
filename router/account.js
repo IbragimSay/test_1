@@ -7,6 +7,7 @@ const url = require('url')
 const {Users, Posts} = require('../bd')
 
 const router = Router()
+// мой профиль
 // GET
 // http://localhost:3500/api/account/myProfile
 // В headers надо предать
@@ -48,7 +49,9 @@ router.get("/myProfile", async (req, res)=>{
 })
 // На выходе мы получаем объекты user с полями
 // user: id, mail, name, tag
+//=======================
 
+// профиль другого пользователя
 // GET
 // http://localhost:3500/api/account/getUserId/?tag={teg пользователя}
 router.get('/getUserId', async (req, res)=>{
