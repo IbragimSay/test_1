@@ -16,6 +16,7 @@ const getToken =(id, role)=>{
         expiresIn: "24h"
     })
 }
+// регистрация
 // POST
 // http://localhost:3500/api/auth/registor
 // В body надо предать
@@ -68,7 +69,7 @@ router.post('/registor', async (req, res)=>{
 
 //=========================
 
-
+// логин
 // POST
 // http://localhost:3500/api/auth/login
 // В body надо предать
@@ -100,6 +101,7 @@ router.post('/login', async (req, res)=>{
 // На выходе мы поучаем объект token 
 
 //=========================
+// вход
 // GET
 // http://localhost:3500/api/auth/entrance
 // В headers надо предать
